@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revele Online — Revele o sexo do seu bebê online e ao vivo</title>
+<meta name="description" content="Crie a revelação do sexo do seu bebê online, ao vivo e cheia de emoção: votação, chat da família, contagem regressiva com suspense e replay. Pronto hoje! reveleonline.com">
+<meta property="og:title" content="Revele Online — Menino ou menina? Revele hoje, ao vivo!">
+<meta property="og:description" content="A revelação do seu bebê online, com a família toda reunida de onde estiver. Suspense, votação ao vivo e aquela explosão de emoção.">
+<meta property="og:type" content="website">
+<link rel="icon" href="logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --aqua1:#19c2b1; --aqua2:#74e6d8; --aqua-deep:#0c948a;
+  --lilac1:#a472e0; --lilac2:#c9a6f2; --lilac-deep:#7e4bc4;
+  --ink:#241b46; --muted:#6f6a8f;
+  --bg:#fbf8ff; --card:#ffffff;
+  --shadow:0 18px 50px rgba(60,30,110,.14);
+  --shadow-sm:0 8px 22px rgba(60,30,110,.10);
+  --radius:26px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5;}
+h1,h2,h3,h4,.disp{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.1;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+
+/* blobs de atmosfera */
+.blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.5;z-index:-2;pointer-events:none;}
+.blob.a{width:420px;height:420px;background:var(--aqua2);top:-120px;left:-120px;}
+.blob.b{width:460px;height:460px;background:var(--lilac2);top:30%;right:-160px;}
+.blob.c{width:380px;height:380px;background:var(--aqua2);bottom:-140px;left:10%;}
+
+/* balões flutuando */
+.floaty{position:fixed;z-index:-1;pointer-events:none;bottom:-160px;opacity:.35;animation:rise linear infinite;}
+.balloon{width:46px;height:56px;border-radius:50% 50% 50% 50%/46% 46% 54% 54%;position:relative;box-shadow:inset -7px -7px 0 rgba(0,0,0,.06);}
+.balloon::after{content:"";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:inherit;}
+.balloon::before{content:"";position:absolute;bottom:-40px;left:50%;width:1px;height:40px;background:rgba(120,90,180,.4);transform:translateX(-50%);}
+.b-aqua{background:radial-gradient(circle at 32% 28%,#b7f3ea,var(--aqua1));border-bottom-color:var(--aqua1);}
+.b-lilac{background:radial-gradient(circle at 32% 28%,#e3d2f7,var(--lilac1));border-bottom-color:var(--lilac1);}
+@keyframes rise{to{transform:translateY(-118vh) rotate(10deg);}}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px;}
+
+/* ---------- NAV ---------- */
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(251,248,255,.78);border-bottom:1px solid rgba(120,90,180,.08);}
+nav .row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:700;font-size:20px;}
+.logo img{width:44px;height:44px;border-radius:50%;box-shadow:var(--shadow-sm);}
+.logo .grad{background:linear-gradient(90deg,var(--aqua-deep),var(--lilac-deep));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.navlinks{display:flex;align-items:center;gap:26px;font-weight:800;font-size:15px;}
+.navlinks a.lnk{color:var(--muted);transition:.2s;}
+.navlinks a.lnk:hover{color:var(--ink);}
+@media(max-width:760px){.navlinks .lnk{display:none;}}
+
+/* ---------- BOTÕES ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;font-family:'Fredoka';
+  font-weight:600;border-radius:999px;transition:transform .14s, box-shadow .2s;text-align:center;}
+.btn:active{transform:scale(.96);}
+.btn-wa{background:linear-gradient(100deg,var(--aqua1),var(--lilac1));color:#fff;padding:15px 28px;font-size:17px;
+  box-shadow:0 12px 28px rgba(120,60,180,.32);}
+.btn-wa:hover{box-shadow:0 16px 36px rgba(120,60,180,.42);transform:translateY(-2px);}
+.btn-wa.lg{padding:19px 40px;font-size:20px;}
+.btn-wa.sm{padding:11px 20px;font-size:15px;}
+.btn-ghost{background:#fff;color:var(--ink);padding:15px 26px;font-size:16px;box-shadow:var(--shadow-sm);}
+.btn-ghost:hover{transform:translateY(-2px);}
+.wa-ic{width:22px;height:22px;flex:none;}
+
+/* ---------- HERO ---------- */
+.hero{padding:54px 0 40px;}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:38px;text-align:center;}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid rgba(120,90,180,.14);
+  padding:8px 16px;border-radius:999px;font-weight:900;font-size:13px;color:var(--lilac-deep);box-shadow:var(--shadow-sm);margin-bottom:20px;}
+.hero h1{font-size:clamp(34px,5.5vw,56px);letter-spacing:-.5px;}
+.hero h1 .hl{position:relative;background:linear-gradient(90deg,var(--aqua-deep),var(--lilac-deep));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p.lead{font-size:clamp(16px,2.2vw,19px);color:var(--muted);font-weight:700;margin:22px 0 30px;max-width:540px;}
+@media(max-width:860px){.hero p.lead{margin-left:auto;margin-right:auto;}}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+@media(max-width:860px){.hero-cta{justify-content:center;}}
+.trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:24px;font-weight:800;font-size:13.5px;color:var(--muted);}
+@media(max-width:860px){.trust{justify-content:center;}}
+.trust span{display:inline-flex;align-items:center;gap:6px;}
+
+/* ---------- PHONE MOCKUP ---------- */
+.phone-stage{display:flex;justify-content:center;}
+.phone{width:280px;max-width:78vw;aspect-ratio:9/19;background:#0e0a22;border-radius:38px;padding:11px;
+  box-shadow:0 30px 70px rgba(60,30,110,.32);position:relative;border:2px solid #2a2350;}
+.phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:84px;height:18px;background:#0e0a22;border-radius:0 0 14px 14px;z-index:3;}
+.screen{width:100%;height:100%;border-radius:28px;overflow:hidden;position:relative;
+  background:linear-gradient(118deg,var(--lilac2) 0%,var(--lilac1) 47%,#fff 47%,#fff 53%,var(--aqua2) 53%,var(--aqua1) 100%);}
+.screen .top{position:absolute;top:0;left:0;right:0;padding:24px 14px 10px;display:flex;justify-content:space-between;align-items:center;}
+.screen .ttl{font-family:'Fredoka';font-weight:700;font-size:13px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.25);}
+.pill{background:rgba(255,255,255,.92);border-radius:999px;padding:4px 9px;font-weight:900;font-size:10px;display:flex;align-items:center;gap:5px;}
+.pill .d{width:7px;height:7px;border-radius:50%;background:#22c55e;}
+.screen .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+.mini-gift{font-size:54px;animation:wob 1.3s ease-in-out infinite;filter:drop-shadow(0 8px 12px rgba(0,0,0,.25));}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.reveal-tag{font-family:'Fredoka';font-weight:700;font-size:18px;color:#fff;background:rgba(0,0,0,.18);padding:7px 16px;border-radius:999px;backdrop-filter:blur(4px);}
+.mini-bars{position:absolute;bottom:18px;left:14px;right:14px;background:rgba(255,255,255,.92);border-radius:14px;padding:10px;box-shadow:0 6px 16px rgba(0,0,0,.15);}
+.mini-bars .lab{display:flex;justify-content:space-between;font-weight:900;font-size:10px;margin-bottom:6px;}
+.mini-bars .lab .g{color:var(--aqua-deep);} .mini-bars .lab .p{color:var(--lilac-deep);}
+.mini-bars .bar{height:11px;border-radius:999px;overflow:hidden;display:flex;}
+.mini-bars .bar i{display:block;height:100%;}
+.mini-bars .bar .ig{width:58%;background:linear-gradient(90deg,var(--aqua2),var(--aqua1));}
+.mini-bars .bar .ip{width:42%;background:linear-gradient(90deg,var(--lilac1),var(--lilac2));}
+.confetti-dot{position:absolute;width:8px;height:8px;border-radius:2px;opacity:.9;animation:fall linear infinite;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(360px) rotate(360deg);opacity:0}}
+
+/* ---------- SEÇÕES ---------- */
+section{padding:64px 0;}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 44px;}
+.sec-head .kicker{font-weight:900;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--aqua-deep);}
+.sec-head h2{font-size:clamp(28px,4vw,40px);margin:10px 0 12px;}
+.sec-head p{color:var(--muted);font-weight:700;font-size:17px;}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:680px){.stats{grid-template-columns:1fr;}}
+.stat{background:#fff;border-radius:var(--radius);padding:24px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid rgba(120,90,180,.07);}
+.stat .big{font-family:'Fredoka';font-weight:700;font-size:30px;background:linear-gradient(90deg,var(--aqua-deep),var(--lilac-deep));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat .sm{color:var(--muted);font-weight:800;font-size:14px;margin-top:4px;}
+
+/* passos */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:780px){.steps{grid-template-columns:1fr;}}
+.step{background:#fff;border-radius:var(--radius);padding:30px 26px;box-shadow:var(--shadow-sm);position:relative;border:1px solid rgba(120,90,180,.07);}
+.step .num{position:absolute;top:-16px;left:26px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  font-family:'Fredoka';font-weight:700;color:#fff;background:linear-gradient(135deg,var(--aqua1),var(--lilac1));box-shadow:var(--shadow-sm);}
+.step .ico{font-size:34px;margin:8px 0 12px;}
+.step h3{font-size:21px;margin-bottom:8px;}
+.step p{color:var(--muted);font-weight:700;font-size:15px;}
+
+/* features */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+@media(max-width:900px){.features{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.features{grid-template-columns:1fr;}}
+.feat{background:#fff;border-radius:22px;padding:24px;box-shadow:var(--shadow-sm);border:1px solid rgba(120,90,180,.07);transition:transform .2s, box-shadow .2s;}
+.feat:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.feat .ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-size:26px;margin-bottom:14px;
+  background:linear-gradient(135deg,var(--aqua2),var(--lilac2));}
+.feat h4{font-size:18px;margin-bottom:6px;}
+.feat p{color:var(--muted);font-weight:700;font-size:14px;}
+
+/* faixa emocional */
+.band{background:linear-gradient(118deg,var(--aqua1),var(--lilac1));border-radius:34px;padding:54px 40px;text-align:center;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+.band::after{content:"🎈🎉💚💜🍼";position:absolute;inset:0;font-size:120px;opacity:.06;display:grid;place-items:center;letter-spacing:30px;}
+.band h2{font-size:clamp(26px,4vw,38px);position:relative;}
+.band p{font-weight:800;font-size:18px;opacity:.95;margin:14px auto 28px;max-width:620px;position:relative;}
+.band .btn-wa{background:#fff;color:var(--lilac-deep);position:relative;}
+.band .btn-wa:hover{color:var(--aqua-deep);}
+
+/* depoimentos */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:840px){.quotes{grid-template-columns:1fr;}}
+.quote{background:#fff;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm);border:1px solid rgba(120,90,180,.07);}
+.quote .stars{color:#ffb700;font-size:16px;letter-spacing:2px;margin-bottom:10px;}
+.quote p{font-weight:700;font-size:15.5px;color:#3a3460;}
+.quote .who{display:flex;align-items:center;gap:10px;margin-top:16px;}
+.quote .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:20px;color:#fff;background:linear-gradient(135deg,var(--aqua1),var(--lilac1));overflow:hidden;flex:none;}
+.quote .av img{width:100%;height:100%;object-fit:cover;}
+.quote .who b{font-size:14px;}.quote .who span{display:block;color:var(--muted);font-size:12px;font-weight:800;}
+
+/* faq */
+.faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.qa{background:#fff;border-radius:18px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid rgba(120,90,180,.07);}
+.qa summary{list-style:none;cursor:pointer;padding:18px 22px;font-family:'Fredoka';font-weight:600;font-size:17px;display:flex;justify-content:space-between;align-items:center;}
+.qa summary::-webkit-details-marker{display:none;}
+.qa summary .plus{transition:.3s;color:var(--lilac-deep);font-size:22px;}
+.qa[open] summary .plus{transform:rotate(45deg);}
+.qa .ans{padding:0 22px 20px;color:var(--muted);font-weight:700;font-size:15px;}
+
+/* footer */
+footer{background:var(--ink);color:#fff;padding:48px 0 28px;margin-top:30px;}
+.foot-grid{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+.foot-logo{display:flex;align-items:center;gap:12px;font-family:'Fredoka';font-weight:700;font-size:20px;}
+.foot-logo img{width:50px;height:50px;border-radius:50%;}
+footer a.fcta{color:#fff;}
+.foot-bot{text-align:center;color:#9a93c4;font-weight:800;font-size:13px;margin-top:30px;border-top:1px solid rgba(255,255,255,.1);padding-top:22px;}
+
+/* float wa */
+.float-wa{position:fixed;right:18px;bottom:18px;z-index:60;width:62px;height:62px;border-radius:50%;
+  background:#25D366;display:grid;place-items:center;box-shadow:0 10px 26px rgba(0,0,0,.28);animation:pulse 2.4s infinite;}
+.float-wa svg{width:34px;height:34px;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}70%{box-shadow:0 0 0 18px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,1,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap row">
+    <a class="logo" href="#topo"><img src="logo.png" alt="Revele Online"><span>Revele <span class="grad">Online</span></span></a>
+    <div class="navlinks">
+      <a class="lnk" href="#como">Como funciona</a>
+      <a class="lnk" href="#recursos">Recursos</a>
+      <a class="lnk" href="#duvidas">Dúvidas</a>
+      <a class="btn btn-wa sm" id="navWa" target="_blank" rel="noopener">💬 Revelar hoje</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="topo">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🎉 Revelação online & ao vivo</span>
+      <h1>Menino ou menina?<br><span class="hl">Revele hoje</span>, com a família toda junta.</h1>
+      <p class="lead">Transforme o grande momento numa página linda, cheia de suspense: votação ao vivo, chat da família, contagem regressiva, explosão de confete e replay pra ninguém ficar de fora — esteja onde estiver. 💚💜</p>
+      <div class="hero-cta">
+        <a class="btn btn-wa lg" id="heroWa" target="_blank" rel="noopener">
+          <svg class="wa-ic" viewBox="0 0 32 32" fill="#fff"><path d="M16 .4C7.4.4.4 7.4.4 16c0 2.8.7 5.4 2 7.7L.3 31.6l8.1-2.1c2.2 1.2 4.8 1.9 7.6 1.9 8.6 0 15.6-7 15.6-15.6S24.6.4 16 .4zm0 28.3c-2.5 0-4.8-.7-6.8-1.8l-.5-.3-4.8 1.3 1.3-4.7-.3-.5c-1.3-2-2-4.4-2-6.9C2.9 8.8 8.8 2.9 16 2.9S29.1 8.8 29.1 16 23.2 28.7 16 28.7zm7.2-9.5c-.4-.2-2.3-1.1-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.6-.2.2-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.4-2.2-2.8-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.2 0-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.7-.6-.6-.9-.7h-.7c-.2 0-.6.1-1 .5-.3.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.9c.2.3 2.6 4 6.3 5.6.9.4 1.6.6 2.1.8.9.3 1.7.2 2.3.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.7-.4z"/></svg>
+          Quero revelar hoje!
+        </a>
+        <a class="btn btn-ghost" href="#como">Ver como funciona →</a>
+      </div>
+      <div class="trust">
+        <span>⚡ Pronto no mesmo dia</span>
+        <span>📱 Em qualquer celular</span>
+        <span>✅ Sem instalar nada</span>
+      </div>
+    </div>
+
+    <div class="phone-stage reveal">
+      <div class="phone">
+        <div class="screen">
+          <div class="top">
+            <span class="ttl">Chá Revelação 💚💜</span>
+            <span class="pill"><span class="d"></span>23 online</span>
+          </div>
+          <div class="center">
+            <div class="mini-gift">🎁</div>
+            <div class="reveal-tag">Faltam 00:08…</div>
+          </div>
+          <div class="mini-bars">
+            <div class="lab"><span class="g">💚 Dan 58%</span><span class="p">42% Lis 💜</span></div>
+            <div class="bar"><i class="ig"></i><i class="ip"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STATS -->
+<section style="padding-top:10px">
+  <div class="wrap stats">
+    <div class="stat reveal"><div class="big">100% online</div><div class="sm">A família participa de qualquer lugar do mundo</div></div>
+    <div class="stat reveal"><div class="big">Ao vivo</div><div class="sm">Todo mundo vê a revelação no mesmo instante</div></div>
+    <div class="stat reveal"><div class="big">Replay incluso</div><div class="sm">Quem não pôde assistir revê quando quiser</div></div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Simples assim</div>
+      <h2>Sua revelação pronta em 3 passos</h2>
+      <p>Você cuida da emoção, a gente cuida da tecnologia.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">1</div><div class="ico">💬</div><h3>Fale com a gente</h3><p>Chame no WhatsApp, conte a data da revelação e o resultado — em segredo absoluto, claro. 🤫</p></div>
+      <div class="step reveal"><div class="num">2</div><div class="ico">🎨</div><h3>Montamos sua página</h3><p>Personalizamos com as fotos do casal, os nomes escolhidos e o tema. Você recebe um link exclusivo e pronto.</p></div>
+      <div class="step reveal"><div class="num">3</div><div class="ico">🎉</div><h3>Compartilhe e emocione</h3><p>Mande o link pra família. Na hora marcada, a contagem começa e a caixa explode ao vivo pra todo mundo!</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section id="recursos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Tudo incluso</div>
+      <h2>Uma experiência inesquecível</h2>
+      <p>Não é só mostrar a cor. É reunir, criar suspense e emocionar de verdade.</p>
+    </div>
+    <div class="features">
+      <div class="feat reveal"><div class="ic">🗳️</div><h4>Votação ao vivo</h4><p>Cada convidado palpita Menino ou Menina e vê o placar mudar em tempo real.</p></div>
+      <div class="feat reveal"><div class="ic">⏱️</div><h4>Contagem com suspense</h4><p>Cronômetro, caixa tremendo, vibração no celular e aquela explosão final de tirar o fôlego.</p></div>
+      <div class="feat reveal"><div class="ic">💬</div><h4>Chat da família</h4><p>Todo mundo conversa e vibra junto, mesmo a milhares de quilômetros de distância.</p></div>
+      <div class="feat reveal"><div class="ic">📸</div><h4>Carrossel de fotos</h4><p>Suas fotos favoritas do casal, com o ultrassom bloqueado até a hora certa.</p></div>
+      <div class="feat reveal"><div class="ic">🎬</div><h4>Replay da revelação</h4><p>Quem não assistiu ao vivo revê o momento mágico quando quiser.</p></div>
+      <div class="feat reveal"><div class="ic">👥</div><h4>Online em tempo real</h4><p>Veja quantas pessoas estão conectadas esperando ansiosas a revelação.</p></div>
+      <div class="feat reveal"><div class="ic">📱</div><h4>No celular de todos</h4><p>Só abrir o link no navegador. Sem baixar app, sem cadastro complicado.</p></div>
+      <div class="feat reveal"><div class="ic">🎵</div><h4>Som & efeitos</h4><p>Trilha, confete e animações que deixam tudo ainda mais emocionante.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAIXA EMOCIONAL -->
+<section>
+  <div class="wrap">
+    <div class="band reveal">
+      <h2>A revelação que a sua família vai lembrar pra sempre</h2>
+      <p>A vovó em outra cidade, o titio que trabalha fora, os amigos de longe — todos reunidos no mesmo momento, contando os segundos junto com você.</p>
+      <a class="btn btn-wa lg" id="bandWa" target="_blank" rel="noopener">💚 Quero revelar hoje!</a>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS (1º é real; os demais são exemplos — troque quando tiver mais) -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Quem revelou, amou</div>
+      <h2>Emoção que vira lembrança</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote reveal"><div class="stars">★★★★★</div><p>“Nossas famílias são do Norte e do Sul, nunca nem tinham se falado. Imagina a alegria de ver eles interagindo no chat e todo mundo ansioso para saber se era Dan ou Lis.”</p><div class="who"><div class="av"><img src="casal.jpeg" alt="Sara e Júlio"></div><div><b>Sara e Júlio</b><span>pais do Dan</span></div></div></div>
+      <div class="quote reveal"><div class="stars">★★★★★</div><p>“A votação deixou todo mundo elétrico no grupo. Quando a caixa explodiu, foi gritaria! Melhor surpresa que já fiz.”</p><div class="who"><div class="av">👨</div><div><b>Rafael</b><span>papai coruja</span></div></div></div>
+      <div class="quote reveal"><div class="stars">★★★★★</div><p>“Ficou lindo e foi super fácil. Mandei o link e em minutos a família toda estava online esperando. Recomendo demais!”</p><div class="who"><div class="av">💁‍♀️</div><div><b>Carol</b><span>tia babona</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="duvidas">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Ficou na dúvida?</div>
+      <h2>Perguntas frequentes</h2>
+    </div>
+    <div class="faq">
+      <details class="qa reveal"><summary>Quanto tempo leva pra ficar pronto?<span class="plus">+</span></summary><div class="ans">Dá pra revelar no mesmo dia! Fale com a gente cedo e montamos sua página personalizada rapidinho.</div></details>
+      <details class="qa reveal"><summary>Preciso instalar algum aplicativo?<span class="plus">+</span></summary><div class="ans">Não. Tudo funciona pelo navegador do celular ou computador. É só abrir o link que você recebe.</div></details>
+      <details class="qa reveal"><summary>A família que mora longe consegue participar?<span class="plus">+</span></summary><div class="ans">Sim! Qualquer pessoa, de qualquer lugar do mundo, entra pelo link e acompanha a revelação ao vivo.</div></details>
+      <details class="qa reveal"><summary>E quem não puder assistir na hora?<span class="plus">+</span></summary><div class="ans">Tem replay! A revelação pode ser revista quando quiser, com todo o suspense e a explosão.</div></details>
+      <details class="qa reveal"><summary>Como faço pra contratar?<span class="plus">+</span></summary><div class="ans">É só chamar no WhatsApp clicando em qualquer botão “Quero revelar hoje!”. A gente te explica tudo na hora.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:24px">
+      <div class="kicker">Bora?</div>
+      <h2>Pronto pra emocionar todo mundo?</h2>
+      <p>Sua revelação ao vivo pode estar no ar ainda hoje.</p>
+    </div>
+    <div style="text-align:center" class="reveal">
+      <a class="btn btn-wa lg" id="finalWa" target="_blank" rel="noopener">💬 Quero revelar hoje!</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-logo"><img src="logo.png" alt="Revele Online"><span>Revele Online</span></div>
+      <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;font-weight:800">
+        <a class="fcta" href="#recursos">Recursos</a>
+        <a class="fcta" href="#duvidas">Dúvidas</a>
+        <a class="fcta" id="footWa" target="_blank" rel="noopener">📱 WhatsApp</a>
+      </div>
+    </div>
+    <div class="foot-bot">reveleonline.com • Feito com 💚💜 para o momento mais especial da sua família.</div>
+  </div>
+</footer>
+
+<!-- BOTÃO FLUTUANTE WHATSAPP -->
+<a class="float-wa" id="floatWa" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 32 32" fill="#fff"><path d="M16 .4C7.4.4.4 7.4.4 16c0 2.8.7 5.4 2 7.7L.3 31.6l8.1-2.1c2.2 1.2 4.8 1.9 7.6 1.9 8.6 0 15.6-7 15.6-15.6S24.6.4 16 .4zm0 28.3c-2.5 0-4.8-.7-6.8-1.8l-.5-.3-4.8 1.3 1.3-4.7-.3-.5c-1.3-2-2-4.4-2-6.9C2.9 8.8 8.8 2.9 16 2.9S29.1 8.8 29.1 16 23.2 28.7 16 28.7zm7.2-9.5c-.4-.2-2.3-1.1-2.7-1.3-.4-.1-.6-.2-.9.2-.3.4-1 1.3-1.3 1.6-.2.2-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1-2-2.4-2.2-2.8-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.2 0-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.7-.6-.6-.9-.7h-.7c-.2 0-.6.1-1 .5-.3.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.9c.2.3 2.6 4 6.3 5.6.9.4 1.6.6 2.1.8.9.3 1.7.2 2.3.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.7-.4z"/></svg>
+</a>
+
+<script>
+/* ====== WhatsApp: número + mensagem padrão ====== */
+const WA_NUMERO   = "5589981043496";            // +55 (89) 98104-3496
+const WA_MENSAGEM = "Quero revelar hoje!";
+const WA_LINK = "https://wa.me/" + WA_NUMERO + "?text=" + encodeURIComponent(WA_MENSAGEM);
+["navWa","heroWa","bandWa","finalWa","footWa","floatWa"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.href = WA_LINK;
+});
+
+/* ====== Confete decorativo no mockup ====== */
+(function(){
+  const screen = document.querySelector(".phone .screen");
+  if(!screen) return;
+  const cores = ["#19c2b1","#a472e0","#74e6d8","#c9a6f2","#ffffff"];
+  for(let i=0;i<14;i++){
+    const d=document.createElement("div");
+    d.className="confetti-dot";
+    d.style.background=cores[i%cores.length];
+    d.style.left=(5+Math.random()*90)+"%";
+    d.style.animationDuration=(2.6+Math.random()*2.4)+"s";
+    d.style.animationDelay=(Math.random()*3)+"s";
+    screen.appendChild(d);
+  }
+})();
+
+/* ====== Balões de fundo ====== */
+(function(){
+  const n=7;
+  for(let i=0;i<n;i++){
+    const f=document.createElement("div"); f.className="floaty";
+    const b=document.createElement("div"); b.className="balloon "+(i%2?"b-lilac":"b-aqua");
+    f.appendChild(b);
+    f.style.left=(Math.random()*96)+"%";
+    f.style.animationDuration=(13+Math.random()*12)+"s";
+    f.style.animationDelay=(Math.random()*10)+"s";
+    f.style.transform="scale("+(.7+Math.random()*.7)+")";
+    document.body.appendChild(f);
+  }
+})();
+
+/* ====== Revelar elementos ao rolar ====== */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+},{threshold:.14});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
